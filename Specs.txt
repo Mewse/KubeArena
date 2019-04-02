@@ -1,0 +1,68 @@
+Components
+----------
+
+* UI - Select an arena and watch the battle
+* API - Get details on a battle
+* Arena - Take a bunch of bots and battle it out
+* Bot - Follow a list of commands in the context of an arena
+* Workshop - UI to program a bot
+* Mongo - Backend
+* BoxOffice - Connect Bots to an arena 
+
+UI
+==
+    - Display list of Arenas
+    - User can select arena (client side selection)
+    - Display arena (uses client side variable to retrieve data)
+        - Updates must be realtime
+
+API
+===
+    - Retrieve list of Arenas
+    - Retrieve details of an arena including all gamestate
+        - Direct from Backend
+
+Arena
+=====
+    - Iterate over main game loop
+    - Retrieve next action from each bot in the arena
+        - If bot doesnt respond in time the action is missed
+        - If bot misses 5 actions it is deemed inactive
+        - If bot misses 10 actions is is kicked from the arena
+        - If bot does not want to take an action is must still respond with a 200 HTTP response
+    - Score must be kept up to date
+    - Active player list must be up to date
+
+Bot
+===
+    - Bot retrieves its command list from Mongo on startup
+    - Bot gets ArenaID from BoxOffice (registers into Arena)
+    - Bot responds to requests from Arena for actions
+        - Actions can have wait conditions before taking next action
+        - All requests must receive a reply (200 HTTP)
+    - Bot must have a death endpoint that kills the process, ending the pod
+    - Bot needs to poll mongo to keep up to date with any sensors provided by the arena
+        - MovementBlocked
+        - TargetAcquired
+        - CanFire
+        - HP
+    - Actions
+        - Move <Direction> Until <condition>
+        - RotateTo <degrees>
+        - Fire if <condition>
+    - If Bots command configuration is deleted from Mongo, leave arena and quit
+
+BoxOffice
+=========
+    - Find first available slot in arena
+        - Return 404 if no available slot found
+        - Post Bot info into Arena to make it start including Bot in Game loop
+    - If no slot available, create new arena (stretch)
+
+Workshop
+========
+    - Provide UI for adding a list of bot commands
+    - Provide list of configurations
+    - Allow editing of existing configurations
+    - Allow deletion of existing configurations
+
