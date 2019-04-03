@@ -1,0 +1,6 @@
+Deployments:
+    Workshop: 3
+
+Services:
+    Workshop: 30001 -> 5000
+
