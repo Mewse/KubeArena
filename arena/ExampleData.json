@@ -1,0 +1,39 @@
+{
+    "arena" : {
+        "players": {
+            "Player1": {
+                "name": "Player1",
+                "health": 10,
+                "position": {"x":200, "y":542},
+                "rotation": 54,
+                "sensors": {
+                    "movementBlocked": false,
+                    "targetAcquired": true,
+                    "canFire": false
+                }
+            }
+        },
+        "scores": {
+            "Player1": 4,
+            "MasterChief": 634
+        },
+        "projectiles": [
+            {
+                "owner": "Player1",
+                "position": {"x":110, "y":402},
+                "velocity": {"x": 0.52, "y": 0.92},
+                "speed": 24
+            }
+        ]
+    },
+    "bot": {
+        "name": "Player1",
+        "action": {
+            "direction": {"x": 0, "y": 0},
+            "speed": 3,
+            "rotate": 94,
+            "fire": false,
+            "fireCondition": {}
+        }
+    }
+}
