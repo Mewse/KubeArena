@@ -9,6 +9,10 @@ from bson.objectid import ObjectId
 # Pull in environment config
 MONGO_URL = os.environ.get("MONGO_URL", "localhost")
 MONGO_PORT = os.environ.get("MONGO_PORT", 27017)
+
+# Costants
+CONFIG_COLLECTION = "botConfig"
+
 # Setup
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
@@ -55,7 +59,7 @@ class BotConfig(Resource):
             return "No config with this ID was found", 404
 
     def put(self, id):
-        col = get_collection("botConfigs")
+        col = get_collection(CONFIG_COLLECTION)
         data = request.get_json()
         updated_config = {
             "configId": data["name"],
@@ -68,7 +72,7 @@ class BotConfig(Resource):
             return "No config with this ID was found", 404
 
     def delete(self, id):
-        col = get_collection("botConfigs")
+        col = get_collection(CONFIG_COLLECTION)
         deleted = col.remove({"_id": ObjectId(id)})
         logger.info("Deleted: %s" % deleted)
         if deleted["n"] > 0:
@@ -78,7 +82,7 @@ class BotConfig(Resource):
 
 class BotConfigList(Resource):
     def get(self):
-        col = get_collection("botConfigs")
+        col = get_collection(CONFIG_COLLECTION)
         docs = col.find()
         configs = []
         for d in docs:
@@ -91,7 +95,7 @@ class BotConfigList(Resource):
         return {"configs": configs}
 
     def post(self):
-        configs = get_collection("botConfigs")
+        configs = get_collection(CONFIG_COLLECTION)
         logger.info("POST Data: %s" % request.get_json())
         data = request.get_json()
         
