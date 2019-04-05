@@ -1,7 +1,11 @@
 {
     "arena" : {
-        "players": {
-            "Player1": {
+        "maxPlayers": 10,
+        "width": 500,
+        "height": 500,
+        "playerRadius": 50,
+        "players": [
+            {
                 "name": "Player1",
                 "health": 10,
                 "position": {"x":200, "y":542},
@@ -12,7 +16,7 @@
                     "canFire": false
                 }
             }
-        },
+        ],
         "scores": {
             "Player1": 4,
             "MasterChief": 634

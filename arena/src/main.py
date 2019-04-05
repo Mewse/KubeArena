@@ -81,14 +81,13 @@ def apply_action(arena, player, action):
     """
     Apply any movements or rotations to the bot in the arena. Also trigger firing if conditions are met
     :param arena: Dict  Main arena object to update
-    :param player: String  Player to update
+    :param player: Dict  Player to update
     :param action: Dict  Changes to make to the bot in the arena
     """
-    bot = arena["players"][player]
     # Movement
-    bot["position"] = move(bot["position"], action["direction"], action["speed"])
+    player["position"] = move(player["position"], action["direction"], action["speed"])
     # Rotation
-    bot["rotation"] = action["rotate"]
+    player["rotation"] = action["rotate"]
     # Fire
 
 
@@ -144,7 +143,7 @@ def startup():
     logger.info("Welcome to the Arena...")
     logger.info("This is Arena %s" % ARENA_ID)
     logger.info("Arena Dimensions: %s x %s. Max Players: %s" % (ARENA_WIDTH, ARENA_HEIGHT, ARENA_MAX_PLAYERS))
-    logger.info("Starting player list: %s" % [player for player in arena["players"].keys()])
+    logger.info("Starting player list: %s" % [player["name"] for player in arena["players"]])
 
 
 def run():
@@ -156,9 +155,9 @@ def run():
     while True:
         try:
             arena = get_arena()
-            for player in arena["players"].keys():
+            for player in arena["players"]:
                 # Get player actions from Db
-                action = get_player_action(player)
+                action = get_player_action(player["name"])
                 # Apply movement/rotation/firing condition
                 apply_action(arena, player, action)
             # Update sensors
